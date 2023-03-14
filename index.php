@@ -15,35 +15,35 @@
         [
             'name' => 'Hotel Belvedere',
             'description' => 'Hotel Belvedere Descrizione',
-            'parking' => true,
+            'parking' => 1,
             'vote' => 4,
             'distance_to_center' => 10.4
         ],
         [
             'name' => 'Hotel Futuro',
             'description' => 'Hotel Futuro Descrizione',
-            'parking' => true,
+            'parking' => 1,
             'vote' => 2,
             'distance_to_center' => 2
         ],
         [
             'name' => 'Hotel Rivamare',
             'description' => 'Hotel Rivamare Descrizione',
-            'parking' => false,
+            'parking' => 0,
             'vote' => 1,
             'distance_to_center' => 1
         ],
         [
             'name' => 'Hotel Bellavista',
             'description' => 'Hotel Bellavista Descrizione',
-            'parking' => false,
+            'parking' => 0,
             'vote' => 5,
             'distance_to_center' => 5.5
         ],
         [
             'name' => 'Hotel Milano',
             'description' => 'Hotel Milano Descrizione',
-            'parking' => true,
+            'parking' => 1,
             'vote' => 2,
             'distance_to_center' => 50
         ],
@@ -56,7 +56,7 @@
     $filtered_hotels = $hotels;
     
     if(isset($_GET["parking"])){
-        $filter_parking = (bool) $_GET["parking"] ?? "both";
+        $filter_parking = $_GET["parking"] ?? "both";
     }
     
     if(isset($_GET["vote"])){
@@ -76,20 +76,13 @@
         $temp_hotels = [];
         //continuo a lavorare su $filtered_hotels cosi da poter applicare filtro su voto E poi sul parcheggio (insieme)
         foreach($filtered_hotels as $hotel) {
-            if($filter_parking === $hotel["parking"]) {
+            if($filter_parking == $hotel["parking"]) {
                 $temp_hotels[] = $hotel;
             }
         }
         $filtered_hotels = $temp_hotels;
-    } else {
-        $temp_hotels = [];
-        foreach($filtered_hotels as $hotel) {           
-            $temp_hotels[] = $hotel;           
-        }
-        $filtered_hotels = $temp_hotels;
-    }
+    } 
 
-    
 ?>
 
 <!DOCTYPE html>
