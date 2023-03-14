@@ -83,28 +83,38 @@
     <div class="container my-5">
         <div class="card">
             <div class="card-header">
-                <h3>Filtra Hotel in base al parcheggio</h3>
+                <h3>Filtra Hotel</h3>
             </div>
             <div class="card-body">
                 <form method="GET">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="parking" id="yes-parking">
-                        <label class="form-check-label" for="yes-parking">
-                            Si
-                        </label>
+
+                    <div class="mb-3">
+                        <label for="vote" class="form-label">Voto medio</label>
+                        <input type="number" class="form-control" id="vote" name="vote" min=1 max=5>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="parking" id="no-parking">
-                        <label class="form-check-label" for="no-parking">
-                            No
-                        </label>
+
+                    <div class="form-control mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="parking" id="yes-parking">
+                            <label class="form-check-label" for="yes-parking">
+                                Con parcheggio
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="parking" id="no-parking">
+                            <label class="form-check-label" for="no-parking">
+                                Senza parcheggio
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="parking" id="both">
+                            <label class="form-check-label" for="both">
+                                Entrambi
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="parking" id="both">
-                        <label class="form-check-label" for="both">
-                            Entrambi
-                        </label>
-                    </div>
+
+                    <button class="btn btn-primary">Filtra la ricerca</button>
                 </form>
             </div>
         </div>
