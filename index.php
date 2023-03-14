@@ -15,35 +15,35 @@
         [
             'name' => 'Hotel Belvedere',
             'description' => 'Hotel Belvedere Descrizione',
-            'parking' => 1,
+            'parking' => true,
             'vote' => 4,
             'distance_to_center' => 10.4
         ],
         [
             'name' => 'Hotel Futuro',
             'description' => 'Hotel Futuro Descrizione',
-            'parking' => 1,
+            'parking' => true,
             'vote' => 2,
             'distance_to_center' => 2
         ],
         [
             'name' => 'Hotel Rivamare',
             'description' => 'Hotel Rivamare Descrizione',
-            'parking' => 0,
+            'parking' => false,
             'vote' => 1,
             'distance_to_center' => 1
         ],
         [
             'name' => 'Hotel Bellavista',
             'description' => 'Hotel Bellavista Descrizione',
-            'parking' => 0,
+            'parking' => false,
             'vote' => 5,
             'distance_to_center' => 5.5
         ],
         [
             'name' => 'Hotel Milano',
             'description' => 'Hotel Milano Descrizione',
-            'parking' => 1,
+            'parking' => true,
             'vote' => 2,
             'distance_to_center' => 50
         ],
@@ -52,12 +52,23 @@
 
     $filter_parking="";
     $filter_vote="";
+
+    $filter_vote_invalid = false;
+    if($filter_vote > 5 || $filter_vote < 0) {
+        $filter_vote = 0;
+        $filter_vote_invalid = true;
+    }
     
     $filtered_hotels = $hotels;
     
     if(isset($_GET["parking"])){
         $filter_parking = $_GET["parking"] ?? "both";
     }
+
+    if(isset($_GET["parking"]) && $filter_parking !== "both"){
+        $filter_parking = (bool) $_GET["parking"] ?? "both";
+    }
+    
     
     if(isset($_GET["vote"])){
         $filter_vote = $_GET["vote"];
@@ -111,24 +122,34 @@
 
                     <div class="mb-3">
                         <label for="vote" class="form-label">Voto medio minimo</label>
-                        <input type="number" class="form-control" id="vote" name="vote" min=1 max=5>
+                        <input type="number" class="form-control <?= $filter_vote_invalid ? "is-invalid" : "" ?>"
+                            id="vote" name="vote" min=0 max=5 value="<?= $filter_vote ?>">
+
+                        <?php if($filter_vote_invalid) : ?>
+                        <div id="filter_vote_feedback" class="invalid-feedback">
+                            Inserisci un valore nel range
+                        </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-control mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="parking" id="yes-parking" value="1">
+                            <input class="form-check-input" type="radio" name="parking" id="yes-parking" value="1"
+                                <?= $filter_parking === true ? "checked" : "" ?>>
                             <label class="form-check-label" for="yes-parking">
                                 Con parcheggio
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="parking" id="no-parking" value="0">
+                            <input class="form-check-input" type="radio" name="parking" id="no-parking" value="0"
+                                <?= $filter_parking === false ? "checked" : "" ?>>
                             <label class="form-check-label" for="no-parking">
                                 Senza parcheggio
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="parking" id="both" value="both">
+                            <input class="form-check-input" type="radio" name="parking" id="both" value="both"
+                                <?= $filter_parking === "both" ? "checked" : "" ?>>
                             <label class="form-check-label" for="both">
                                 Entrambi
                             </label>
