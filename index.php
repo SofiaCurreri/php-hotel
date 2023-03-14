@@ -50,18 +50,46 @@
 
     ];
 
-    $filter_parking = $_GET["parking"];
-
+    $filter_parking="";
+    $filter_vote="";
+    
     $filtered_hotels = $hotels;
+    
+    if(isset($_GET["parking"])){
+        $filter_parking = (bool) $_GET["parking"] ?? "both";
+    }
+    
+    if(isset($_GET["vote"])){
+        $filter_vote = $_GET["vote"];
 
-    if($filter_parking != "both") {
-        $temp_hotels = [];
+        $temp_hotels=[];
         foreach($filtered_hotels as $hotel) {
-            if($hotel["parking"] ) {
+            if($hotel["vote"] >= $filter_vote) {
                 $temp_hotels[] = $hotel;
             }
         }
-    };
+        $filtered_hotels = $temp_hotels;
+    }
+
+
+    if($filter_parking !== "both") {
+        $temp_hotels = [];
+        //continuo a lavorare su $filtered_hotels cosi da poter applicare filtro su voto E poi sul parcheggio (insieme)
+        foreach($filtered_hotels as $hotel) {
+            if($filter_parking === $hotel["parking"]) {
+                $temp_hotels[] = $hotel;
+            }
+        }
+        $filtered_hotels = $temp_hotels;
+    } else {
+        $temp_hotels = [];
+        foreach($filtered_hotels as $hotel) {           
+            $temp_hotels[] = $hotel;           
+        }
+        $filtered_hotels = $temp_hotels;
+    }
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -89,25 +117,25 @@
                 <form method="GET">
 
                     <div class="mb-3">
-                        <label for="vote" class="form-label">Voto medio</label>
+                        <label for="vote" class="form-label">Voto medio minimo</label>
                         <input type="number" class="form-control" id="vote" name="vote" min=1 max=5>
                     </div>
 
                     <div class="form-control mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="parking" id="yes-parking">
+                            <input class="form-check-input" type="radio" name="parking" id="yes-parking" value="1">
                             <label class="form-check-label" for="yes-parking">
                                 Con parcheggio
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="parking" id="no-parking">
+                            <input class="form-check-input" type="radio" name="parking" id="no-parking" value="0">
                             <label class="form-check-label" for="no-parking">
                                 Senza parcheggio
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="parking" id="both">
+                            <input class="form-check-input" type="radio" name="parking" id="both" value="both">
                             <label class="form-check-label" for="both">
                                 Entrambi
                             </label>
