@@ -53,18 +53,13 @@
     $filter_parking="";
     $filter_vote="";
 
-    $filter_vote_invalid = false;
-    if($filter_vote > 5 || $filter_vote < 0) {
-        $filter_vote = 0;
-        $filter_vote_invalid = true;
-    }
     
     $filtered_hotels = $hotels;
     
     if(isset($_GET["parking"])){
         $filter_parking = $_GET["parking"] ?? "both";
     }
-
+    
     if(isset($_GET["parking"]) && $filter_parking !== "both"){
         $filter_parking = (bool) $_GET["parking"] ?? "both";
     }
@@ -72,7 +67,7 @@
     
     if(isset($_GET["vote"])){
         $filter_vote = $_GET["vote"];
-
+        
         $temp_hotels=[];
         foreach($filtered_hotels as $hotel) {
             if($hotel["vote"] >= $filter_vote) {
@@ -81,8 +76,13 @@
         }
         $filtered_hotels = $temp_hotels;
     }
-
-
+    
+    $filter_vote_invalid = false;
+    if($filter_vote > 5 || $filter_vote < 0) {
+        $filter_vote = 0;
+        $filter_vote_invalid = true;
+    }
+    
     if($filter_parking !== "both") {
         $temp_hotels = [];
         //continuo a lavorare su $filtered_hotels cosi da poter applicare filtro su voto E poi sul parcheggio (insieme)
