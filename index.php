@@ -49,6 +49,19 @@
         ],
 
     ];
+
+    $filter_parking = $_GET["parking"];
+
+    $filtered_hotels = $hotels;
+
+    if($filter_parking != "both") {
+        $temp_hotels = [];
+        foreach($filtered_hotels as $hotel) {
+            if($hotel["parking"] ) {
+                $temp_hotels[] = $hotel;
+            }
+        }
+    };
 ?>
 
 <!DOCTYPE html>
@@ -86,6 +99,12 @@
                             No
                         </label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="parking" id="both">
+                        <label class="form-check-label" for="both">
+                            Entrambi
+                        </label>
+                    </div>
                 </form>
             </div>
         </div>
@@ -106,11 +125,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($hotels as $key => $hotel) : ?>
+                        <?php foreach($filtered_hotels as $key => $hotel) : ?>
                         <tr>
                             <th scope="row"><?= $key + 1 ?></th>
                             <td><?= $hotel["name"] ?></td>
-                            <td><?= $hotel["parking"] ?></td>
+                            <td><?= $hotel["parking"] ? "Sì" : "No" ?></td>
                             <td><?= $hotel["vote"] ?></td>
                             <td><?= $hotel["distance_to_center"] ?> Km</td>
                         </tr>
